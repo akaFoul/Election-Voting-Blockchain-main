@@ -19,7 +19,7 @@ const Layout = ({ children }) => {
    const [showSidebar, setShowSidebar] = useState(false);
    const logoutHandler = async () => {
       try {
-         await axios.get('/election/logout', {
+         await axios.get('http://localhost:4000/api/election/logout', {
             withCredentials: true,
          });
          setUser(null);

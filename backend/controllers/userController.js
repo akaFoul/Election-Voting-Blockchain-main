@@ -47,45 +47,50 @@ exports.getUser = catchAsyncError(async (req, res, next) => {
 //Description -> Generating Otp to login
 exports.generateOTP = catchAsyncError(async (req, res, next) => {
    const { email } = req.body;
-   debugger;
+   console.log(email,"email test")
+   // debugger;
    if (!email) {
       res.status(200).json({
          success: false,
          message: `no email provided`,
       });
    }
-
+console.log("before user", email)
    //Finding user
    const user = await User.findOne({ email });
    //const user1 = await User.find();
-
+console.log(user,"isUser?")
    if (!user) {
       return next(new ErrorHandler("Invalid Email", 404));
    }
 
    //Generating Otp
    const otp = user.getOtp();
+   console.log(otp,"otp?")
 
    //saving otp in user
    await user.save({ validateBeforeSave: false });
 
    //Sending otp email
    const message = `Your otp to login is ${otp}. It will expire in 5 minutes`;
-   try {
-      if (process.env.NODE_ENV == 'production') {
-         await sendEmailProd({
-            to: user.email,
-            subject: 'New Otp',
-            html: `<p>${message}</p>`,
-         });
-      } else {
-         // await sendEmail({
-         //    email: user.email,
-         //    subject: 'New Otp',
-         //    message,
-         // });
-      }
+   console.log(otp,message);
 
+   try {
+      // if (process.env.NODE_ENV == 'production') {
+      //    await sendEmailProd({
+      //       to: user.email,
+      //       subject: 'New Otp',
+      //       html: `<p>${message}</p>`,
+      //    });
+      // } else {
+      //     await sendEmail({
+      //        email: user.email,
+      //        subject: 'New Otp',
+      //        message,
+      //     });
+      // }
+
+      console.log(user.email,otp,"test2")
       res.status(200).json({
          success: true,
          message: `Email sent to ${user.email} ${otp}`,
@@ -94,7 +99,7 @@ exports.generateOTP = catchAsyncError(async (req, res, next) => {
       user.otp = undefined;
       user.otpExpire = undefined;
       ///await user.save({ validateBeforeSave: false });
-
+console.log(error)
       return next(new ErrorHandler(JSON.stringify(otp), 500));
    }
 });
@@ -114,15 +119,17 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
       email,
       otpExpire: { $gt: Date.now() },
    }).select('+otp');
-
-   //console.log(user);
+   console.log(user,"got user");
    // console.log(user.createdAt + "      " + user.otpExpire);
    if (!user) {
       return next(new ErrorHandler('Otp is invalid or expired or email id is wrong', 400));
    }
+   console.log("compare run")
 
    //checking otp is correct or not
    const isOtpMatched = await user.compareOtp(otp);
+   console.log(isOtpMatched,"isOtpMatched compare run")
+
    if (!isOtpMatched) {
       return next(new ErrorHandler('Invalid Email or otp', 401));
    }

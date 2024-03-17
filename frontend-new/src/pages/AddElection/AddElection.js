@@ -41,6 +41,7 @@ const AddElection = () => {
          setElection(address);
          navigate('/election');
       } catch (err) {
+         console.log(err)
          notify(err.message, 'error');
       }
       setLoading(false);

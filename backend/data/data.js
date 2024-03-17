@@ -1,9 +1,9 @@
 exports.emails = [
    {
-      email: 'dev.prahlad19@gmail.com',
+      email: 'amansingh74644@gmail.com',
       name: 'as',
       role: 'admin',
-      eAddress: '0xa1C8219123c9Ac63a5fc17Eb9c432Bb8581b916d',
+      eAddress: '0xbde7fd11621E0ab9Ec223F010c636Fa6CE6744C9',
    },
    {
       email: 'voter1@gmail.com',

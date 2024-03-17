@@ -57,6 +57,7 @@ userSchema.pre('save', async function (next) {
 //Compare user password
 userSchema.methods.compareOtp = async function (enteredOtp) {
    // console.log(crypto.createHash('sha256').update(enteredOtp).digest('hex')+ "  "+ this.otp);
+   console.log("compare run")
    return await bcrypt.compare(enteredOtp, this.otp);
    //return enteredOtp == this.otp;
 };
@@ -74,10 +75,10 @@ userSchema.methods.getOtp = function () {
    this.otp = crypto.randomBytes(5).toString('hex');
 
    //hashing the otp
-   //this.otp = crypto.createHash('sha256').update(newOtp).digest('hex');
+  // this.otp = crypto.createHash('sha256').update(newOtp).digest('hex');
    //this.otp = newOtp;
    //set otp expire time
-   this.otpExpire = Date.now() + 5 * 60 * 1000; //5mins
+  this.otpExpire = Date.now() + 5 * 60 * 1000; //5mins
    return this.otp;
 };
 

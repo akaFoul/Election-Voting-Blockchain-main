@@ -59,7 +59,7 @@ const Login = () => {
       setLoading(true);
       try {
          const response = await axios.post(
-            '/election/login',
+            'http://localhost:4000/api/election/login',
             {
                email,
                otp,
